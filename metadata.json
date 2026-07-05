@@ -1,0 +1,6 @@
+{
+  "name": "Circle Up",
+  "description": "Hyper-local social network and safety app. Connect with verified neighbours, buy & sell locally, host meetups, search with Circle Genie AI, and stay safe with Circle Guard SOS.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
