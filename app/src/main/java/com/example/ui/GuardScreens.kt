@@ -1,5 +1,7 @@
 package com.example.ui
 
+import com.example.ui.theme.BrandInk
+
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
@@ -28,6 +30,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+import android.Manifest
+import android.content.pm.PackageManager
+import androidx.core.content.ContextCompat
+import com.google.android.gms.location.LocationServices
+import androidx.compose.ui.platform.LocalContext
+
 import com.example.ui.theme.*
 import com.example.viewmodel.CircleUpViewModel
 import kotlinx.coroutines.delay
@@ -678,7 +688,8 @@ fun SilentPhraseScreen(onBack: () -> Unit) {
                 value = phrase,
                 onValueChange = { phrase = it },
                 textStyle = LocalTextStyle.current.copy(fontWeight = FontWeight.Bold),
-                colors = OutlinedTextFieldDefaults.colors(
+                colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, 
+
                     focusedBorderColor = BrandPrimary,
                     unfocusedBorderColor = Color(0xFFE5E7EB)
                 ),
@@ -703,6 +714,46 @@ fun SilentPhraseScreen(onBack: () -> Unit) {
 fun ShareLocationScreen(onBack: () -> Unit) {
     var active by remember { mutableStateOf(false) }
     var durationMinutes by remember { mutableStateOf(30f) }
+    
+    val context = LocalContext.current
+    var locationText by remember { mutableStateOf("Fetching location...") }
+    
+    val fusedLocationClient = remember { LocationServices.getFusedLocationProviderClient(context) }
+    
+    val permissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestMultiplePermissions()
+    ) { permissions ->
+        if (permissions[Manifest.permission.ACCESS_FINE_LOCATION] == true || permissions[Manifest.permission.ACCESS_COARSE_LOCATION] == true) {
+            try {
+                fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                    if (location != null) {
+                        locationText = "${"%.4f".format(location.latitude)}° N, ${"%.4f".format(location.longitude)}° E"
+                    } else {
+                        locationText = "Location not found"
+                    }
+                }
+            } catch (e: SecurityException) {
+                locationText = "Permission denied"
+            }
+        } else {
+            locationText = "Permission denied"
+        }
+    }
+    
+    LaunchedEffect(Unit) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location ->
+                if (location != null) {
+                    locationText = "${"%.4f".format(location.latitude)}° N, ${"%.4f".format(location.longitude)}° E"
+                } else {
+                    locationText = "Location not found"
+                }
+            }
+        } else {
+            permissionLauncher.launch(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION))
+        }
+    }
+
 
     Column(
         modifier = Modifier
@@ -727,7 +778,7 @@ fun ShareLocationScreen(onBack: () -> Unit) {
                 .fillMaxWidth()
                 .padding(24.dp)
         ) {
-            // Mock Location Circle Map
+            
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -748,7 +799,7 @@ fun ShareLocationScreen(onBack: () -> Unit) {
                     }
                     Spacer(modifier = Modifier.height(10.dp))
                     Text(text = "HSR Layout, Tower B", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = BrandInk)
-                    Text(text = "12.9120° N, 77.6446° E", fontSize = 11.sp, color = Color.Gray)
+                    Text(text = locationText, fontSize = 11.sp, color = Color.Gray)
                 }
             }
 

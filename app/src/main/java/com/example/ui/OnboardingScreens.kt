@@ -1,4 +1,5 @@
 package com.example.ui
+import java.io.ByteArrayOutputStream
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
@@ -45,7 +46,12 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
+
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import android.net.Uri
 import com.example.ui.theme.BrandAmber
 import com.example.ui.theme.BrandInk
 import com.example.ui.theme.BrandCream
@@ -55,7 +61,6 @@ import com.example.ui.theme.BrandSage
 import com.example.ui.theme.HeartRed
 import com.example.viewmodel.CircleUpViewModel
 import kotlinx.coroutines.delay
-import java.io.ByteArrayOutputStream
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -266,7 +271,10 @@ fun PhoneScreen(
             placeholder = { Text("Phone number, username or email", fontSize = 14.sp) },
             singleLine = true,
             shape = RoundedCornerShape(12.dp),
-            colors = OutlinedTextFieldDefaults.colors(
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, 
+
+
+
                 focusedBorderColor = BrandPrimary,
                 unfocusedBorderColor = Color(0xFFE5E7EB),
                 focusedContainerColor = BrandCream,
@@ -284,7 +292,10 @@ fun PhoneScreen(
             singleLine = true,
             visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
             shape = RoundedCornerShape(12.dp),
-            colors = OutlinedTextFieldDefaults.colors(
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, 
+
+
+
                 focusedBorderColor = BrandPrimary,
                 unfocusedBorderColor = Color(0xFFE5E7EB),
                 focusedContainerColor = BrandCream,
@@ -589,7 +600,10 @@ fun OtpScreen(
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     shape = RoundedCornerShape(16.dp),
-                    colors = OutlinedTextFieldDefaults.colors(
+                    colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, 
+
+
+
                         focusedBorderColor = BrandPrimary,
                         unfocusedBorderColor = Color(0xFFE5E7EB),
                         focusedContainerColor = BrandCream,
@@ -641,6 +655,16 @@ fun AddressScreen(
     var locationOn by remember { mutableStateOf(false) }
     var selfieBase64 by remember { mutableStateOf<String?>(null) }
     var aiStatus by remember { mutableStateOf("") } // 'none', 'verifying', 'verified'
+
+    val cameraLauncher = rememberLauncherForActivityResult(ActivityResultContracts.TakePicturePreview()) { bitmap: Bitmap? ->
+        if (bitmap != null) {
+            aiStatus = "verifying"
+            val outputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 80, outputStream)
+            val byteArray = outputStream.toByteArray()
+            selfieBase64 = Base64.encodeToString(byteArray, Base64.DEFAULT)
+        }
+    }
 
     val doneAddress = address.isNotEmpty()
     val doneSelfie = aiStatus == "verified"
@@ -824,7 +848,10 @@ fun AddressScreen(
                             singleLine = true,
                             leadingIcon = { Icon(Icons.Default.Map, contentDescription = "Map", tint = Color.Gray) },
                             shape = RoundedCornerShape(12.dp),
-                            colors = OutlinedTextFieldDefaults.colors(
+                            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, 
+
+
+
                                 focusedBorderColor = BrandPrimary,
                                 unfocusedBorderColor = Color(0xFFE5E7EB),
                                 focusedContainerColor = Color.White,
@@ -969,10 +996,8 @@ fun AddressScreen(
                                     .height(56.dp)
                                     .clip(RoundedCornerShape(12.dp))
                                     .border(BorderStroke(1.dp, Color.Gray), RoundedCornerShape(12.dp))
-                                    .clickable {
-                                        // Mock Take Selfie
-                                        aiStatus = "verifying"
-                                        selfieBase64 = "dummy_data" // dummy selfie representation
+                                                                        .clickable {
+                                        cameraLauncher.launch(null)
                                     }
                                     .padding(horizontal = 16.dp),
                                 contentAlignment = Alignment.CenterStart
@@ -992,7 +1017,7 @@ fun AddressScreen(
             }
         }
 
-        // Mock verification timer
+        // Verification timer
         LaunchedEffect(aiStatus) {
             if (aiStatus == "verifying") {
                 delay(2000)
@@ -1039,6 +1064,13 @@ fun ProfileSetupScreen(
 ) {
     var name by remember { mutableStateOf("") }
     var bio by remember { mutableStateOf("") }
+    var avatarUri by remember { mutableStateOf<Uri?>(null) }
+    
+    val imagePickerLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        avatarUri = uri
+    }
     val vibes = remember { mutableStateListOf<String>() }
 
     val minimumVibesSelected = vibes.size >= 3
@@ -1080,7 +1112,6 @@ fun ProfileSetupScreen(
                     color = Color.Gray,
                     modifier = Modifier.padding(bottom = 24.dp)
                 )
-
                 // Dummy Avatar Selector
                 Box(
                     modifier = Modifier
@@ -1092,15 +1123,25 @@ fun ProfileSetupScreen(
                         modifier = Modifier
                             .size(100.dp)
                             .clip(CircleShape)
-                            .background(BrandGradient),
+                            .background(BrandGradient)
+                            .clickable { imagePickerLauncher.launch("image/*") },
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(
-                            text = if (name.isNotEmpty()) name.take(1).uppercase() else "C",
-                            color = Color.White,
-                            fontSize = 36.sp,
-                            fontWeight = FontWeight.Bold
-                        )
+                        if (avatarUri != null) {
+                            AsyncImage(
+                                model = avatarUri,
+                                contentDescription = "Avatar",
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        } else {
+                            Text(
+                                text = if (name.isNotEmpty()) name.take(1).uppercase() else "C",
+                                color = Color.White,
+                                fontSize = 36.sp,
+                                fontWeight = FontWeight.Bold
+                            )
+                        }
                     }
                 }
 
@@ -1116,7 +1157,10 @@ fun ProfileSetupScreen(
                     onValueChange = { name = it },
                     placeholder = { Text("e.g. Aanya Sharma", fontSize = 15.sp) },
                     singleLine = true,
-                    colors = OutlinedTextFieldDefaults.colors(
+                    colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, 
+
+
+
                         focusedBorderColor = BrandPrimary,
                         unfocusedBorderColor = Color(0xFFE5E7EB)
                     ),
@@ -1136,7 +1180,10 @@ fun ProfileSetupScreen(
                     value = bio,
                     onValueChange = { bio = it },
                     placeholder = { Text("Tell your circle who you are", fontSize = 15.sp) },
-                    colors = OutlinedTextFieldDefaults.colors(
+                    colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, 
+
+
+
                         focusedBorderColor = BrandPrimary,
                         unfocusedBorderColor = Color(0xFFE5E7EB)
                     ),

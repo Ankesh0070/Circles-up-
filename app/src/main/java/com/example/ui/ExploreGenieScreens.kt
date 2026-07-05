@@ -1,5 +1,7 @@
 package com.example.ui
 
+import com.example.ui.theme.BrandInk
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -92,7 +94,8 @@ fun ExploreScreen(
                 placeholder = { Text("Search people, posts, places...", fontSize = 14.sp) },
                 singleLine = true,
                 leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Color.Gray) },
-                colors = OutlinedTextFieldDefaults.colors(
+                colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, 
+
                     focusedBorderColor = BrandPrimary,
                     unfocusedBorderColor = Color(0xFFE5E7EB),
                     focusedContainerColor = BrandCream,
@@ -436,7 +439,8 @@ fun GenieScreen(
                 value = queryText,
                 onValueChange = { queryText = it },
                 placeholder = { Text("Ask your Circle Genie...", fontSize = 14.sp) },
-                colors = OutlinedTextFieldDefaults.colors(
+                colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, 
+
                     focusedBorderColor = BrandPrimary,
                     unfocusedBorderColor = Color(0xFFE5E7EB)
                 ),
@@ -749,7 +753,8 @@ fun CreateEventScreen(
             value = title,
             onValueChange = { title = it },
             placeholder = { Text("Event Name (e.g. Holi Pool Party)", fontSize = 14.sp) },
-            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier.fillMaxWidth()
         )
@@ -760,7 +765,8 @@ fun CreateEventScreen(
             value = location,
             onValueChange = { location = it },
             placeholder = { Text("Location (e.g. Clubhouse)", fontSize = 14.sp) },
-            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier.fillMaxWidth()
         )
@@ -771,7 +777,8 @@ fun CreateEventScreen(
             value = dateText,
             onValueChange = { dateText = it },
             placeholder = { Text("Date & Time (e.g. Sunday, 12 PM)", fontSize = 14.sp) },
-            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier.fillMaxWidth()
         )
@@ -782,7 +789,8 @@ fun CreateEventScreen(
             value = desc,
             onValueChange = { desc = it },
             placeholder = { Text("Description (optional)", fontSize = 14.sp) },
-            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier
                 .fillMaxWidth()
@@ -874,7 +882,8 @@ fun CreatePageScreen(
             value = name,
             onValueChange = { name = it },
             placeholder = { Text("Page name (e.g. Sharma Ji Ka Chai)", fontSize = 14.sp) },
-            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier.fillMaxWidth()
         )
@@ -885,7 +894,8 @@ fun CreatePageScreen(
             value = handle,
             onValueChange = { handle = it },
             placeholder = { Text("Page handle (e.g. sharma_chai)", fontSize = 14.sp) },
-            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier.fillMaxWidth()
         )
@@ -896,7 +906,8 @@ fun CreatePageScreen(
             value = tagline,
             onValueChange = { tagline = it },
             placeholder = { Text("Tagline (e.g. The best tapri tea)", fontSize = 14.sp) },
-            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier.fillMaxWidth()
         )
@@ -907,7 +918,8 @@ fun CreatePageScreen(
             value = desc,
             onValueChange = { desc = it },
             placeholder = { Text("About description...", fontSize = 14.sp) },
-            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier
                 .fillMaxWidth()
@@ -1110,7 +1122,8 @@ fun CreateAdScreen(
             onValueChange = { name = it },
             placeholder = { Text("e.g. Cardi launch promotion", fontSize = 14.sp) },
             singleLine = true,
-            colors = OutlinedTextFieldDefaults.colors(
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, 
+
                 focusedBorderColor = BrandPrimary,
                 unfocusedBorderColor = Color(0xFFE5E7EB)
             ),
@@ -1157,7 +1170,8 @@ fun CreateAdScreen(
             onValueChange = { budgetAmount = it },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            colors = OutlinedTextFieldDefaults.colors(
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, 
+
                 focusedBorderColor = BrandPrimary,
                 unfocusedBorderColor = Color(0xFFE5E7EB)
             ),

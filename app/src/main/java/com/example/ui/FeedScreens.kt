@@ -1,5 +1,7 @@
 package com.example.ui
 
+import com.example.ui.theme.BrandInk
+
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
@@ -665,7 +667,8 @@ fun PostDetailScreen(
                 value = commentText,
                 onValueChange = { commentText = it },
                 placeholder = { Text("Add a comment...", fontSize = 13.sp) },
-                colors = OutlinedTextFieldDefaults.colors(
+                colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, 
+
                     focusedBorderColor = BrandPrimary,
                     unfocusedBorderColor = Color(0xFFE5E7EB)
                 ),
@@ -782,7 +785,8 @@ fun CreatePostScreen(
             value = caption,
             onValueChange = { caption = it },
             placeholder = { Text("What do you want to share with your circle?", fontSize = 14.sp) },
-            colors = OutlinedTextFieldDefaults.colors(
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, 
+
                 focusedBorderColor = BrandPrimary,
                 unfocusedBorderColor = Color(0xFFE5E7EB)
             ),

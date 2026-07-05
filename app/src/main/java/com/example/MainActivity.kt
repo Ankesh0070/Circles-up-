@@ -67,7 +67,9 @@ fun MainAppNavigation() {
         composable("phone") {
             PhoneScreen(
                 onContinue = { emailOrPhone ->
-                    navController.navigate("address_setup")
+                    navController.navigate("main") {
+                        popUpTo("splash") { inclusive = true }
+                    }
                 },
                 onSignup = { navController.navigate("signup") }
             )

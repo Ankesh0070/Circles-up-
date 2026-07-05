@@ -79,7 +79,9 @@ fun ChatsTimeline(
             placeholder = { Text("Search chats and groups", fontSize = 14.sp) },
             singleLine = true,
             leadingIcon = { Icon(Icons.Default.Search, contentDescription = null, tint = Color.Gray) },
-            colors = OutlinedTextFieldDefaults.colors(
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk,
+
+
                 focusedBorderColor = BrandPrimary,
                 unfocusedBorderColor = Color(0xFFE5E7EB),
                 focusedContainerColor = BrandCream,
@@ -255,7 +257,9 @@ fun ChatDetailScreen(
                 value = text,
                 onValueChange = { text = it },
                 placeholder = { Text("Message...", fontSize = 14.sp) },
-                colors = OutlinedTextFieldDefaults.colors(
+                colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk,
+
+
                     focusedBorderColor = BrandPrimary,
                     unfocusedBorderColor = Color(0xFFE5E7EB)
                 ),
@@ -559,7 +563,7 @@ fun EditProfileScreen(
         OutlinedTextField(
             value = name,
             onValueChange = { name = it },
-            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier
                 .fillMaxWidth()
@@ -570,7 +574,7 @@ fun EditProfileScreen(
         OutlinedTextField(
             value = bio,
             onValueChange = { bio = it },
-            colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
+            colors = OutlinedTextFieldDefaults.colors(focusedTextColor = BrandInk, unfocusedTextColor = BrandInk, focusedBorderColor = BrandPrimary, unfocusedBorderColor = Color(0xFFE5E7EB)),
             shape = RoundedCornerShape(12.dp),
             modifier = Modifier
                 .fillMaxWidth()
